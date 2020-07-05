@@ -91,7 +91,7 @@ func (c *client) Connect(ctx context.Context, master string, id string) (err err
 	pk := NewPeerKey(c.key.Certificate(), pub)
 	packet := Packet{01, 01}
 
-	data := encoder.EncodeRaw(connectCmd{
+	data := encoder.EncodeRaw(ConnectCmd{
 		Cluster: c.clusterId,
 		Version: c.version,
 		Peer:    pk,
@@ -141,7 +141,7 @@ func (c *client) runConnectionReader(ctx context.Context, conn *net.UDPConn, clu
 		return errors.New("invalid signature")
 	}
 
-	cmd := acceptCmd{}
+	cmd := AcceptCmd{}
 	if err := encoder.DecodeRaw(msg.Data, &cmd); err != nil {
 		return err
 	}
