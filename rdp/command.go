@@ -22,14 +22,14 @@ type SignedMessage struct {
 }
 
 //Command from clients
-type connectCmd struct {
+type ConnectCmd struct {
 	Cluster crypto.Certificate //
 	Peer    PeerKey            //32 byte
 	Version Version
 }
 
 //Command from manager
-type acceptCmd struct {
+type AcceptCmd struct {
 	Key          crypto.PublicKey
 	ClusterIndex uint16
 }
