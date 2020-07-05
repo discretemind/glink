@@ -13,7 +13,6 @@ type FilterHandler func(event *Event) (*Event, error)
 type PushHandler func(event *Event)
 
 type Context struct {
-
 }
 
 type IStreamSource interface {
@@ -41,7 +40,7 @@ func Stream(from *DataStream, handler FilterHandler) (result *DataStream) {
 			}
 			return
 		}
-		if outEvent != nil{
+		if outEvent != nil {
 			for _, out := range result.outs {
 				out(outEvent)
 			}

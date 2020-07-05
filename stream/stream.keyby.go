@@ -52,7 +52,6 @@ func (s *DataStream) KeyByFieldSync(fields ...string) *DataStream {
 		}
 		fmt.Println(e)
 
-
 		//field := v.FieldByName(fieldName)
 		//if field.Interface() == fieldValue {
 		//	return event, nil
@@ -60,5 +59,5 @@ func (s *DataStream) KeyByFieldSync(fields ...string) *DataStream {
 		//	return nil, nil
 		//}
 		return nil, nil
-	})
+	}).Name("Key By")
 }

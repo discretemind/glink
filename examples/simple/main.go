@@ -12,12 +12,8 @@ type packet struct {
 	Num  int
 }
 
-func main() {
-	fmt.Println("Start")
-	done := make(chan bool, 1)
-	job := glink.Standalone()
-	job.Task("simple", func(input stream.IInputStream) {
-
+func input(done chan bool) func(input stream.IInputStream) {
+	return func(input stream.IInputStream) {
 		go func() {
 			i := 0
 			for i < 10 {
@@ -38,28 +34,39 @@ func main() {
 			}
 			close(done)
 		}()
-	}, func(flow *stream.DataStream) {
-		flow.Map(func(value interface{}) (interface{}, error) {
-			p := value.(packet)
-			p.Num *= 2
-			return p, nil
-		}).Name("All items").Print()
+	}
 
-		flow.FilterByField("Type", "type X").Map(func(value interface{}) (interface{}, error) {
-			p := value.(packet)
-			p.Num *= 2
-			return p, nil
-		}).Name("Filtered X").Print()
+}
 
-		flow.Filter(func(value interface{}) bool {
-			return value.(packet).Type == "type Y"
-		}).Map(func(value interface{}) (interface{}, error) {
-			p := value.(packet)
-			p.Num *= 10
-			return p, nil
-		}).Name("Filtered Y").Print()
-
+func main() {
+	fmt.Println("Start")
+	done := make(chan bool, 1)
+	job := glink.Standalone()
+	inputSet := job.Task("simple", input(done), func(i interface{}) time.Time {
+		return time.Now()
 	})
+	set2 := inputSet.Map(func(value interface{}) (interface{}, error) {
+		p := value.(packet)
+		p.Num *= 2
+		return p, nil
+	}).Name("All items")
+
+	set2.Print()
+	set3 := set2.FilterByField("Type", "type X").Map(func(value interface{}) (interface{}, error) {
+		p := value.(packet)
+		p.Num *= 2
+		return p, nil
+	}).Name("Filtered X")
+
+	set3.Print()
+	set3.Filter(func(value interface{}) bool {
+		return value.(packet).Type == "type Y"
+	}).Map(func(value interface{}) (interface{}, error) {
+		p := value.(packet)
+		p.Num *= 10
+		return p, nil
+	}).Name("Filtered Y").Print()
+
 
 	go job.Run()
 

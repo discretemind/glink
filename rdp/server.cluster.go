@@ -77,14 +77,6 @@ func (c *cluster) Handle(addr *net.UDPAddr, packet []byte) error {
 	return fmt.Errorf("unknown Peer %s", addr.String())
 }
 
-//func (c *cluster) AcceptPeer(id crypto.Certificate) (err error) {
-//	if p, ok := c.peers[id]; ok {
-//		p.accepted = true
-//		return c.messageAccepted(p)
-//	}
-//	return fmt.Errorf("not found perr with id %x", id[:])
-//}
-
 func (c *cluster) Disable(id string) (err error) {
 	//if p, ok := c.peers[id]; ok {
 	//	p.accepted = true

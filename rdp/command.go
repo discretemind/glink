@@ -2,6 +2,7 @@ package rdp
 
 import (
 	"fmt"
+	"github.com/discretemind/glink/stream/quantum"
 	"github.com/discretemind/glink/utils/crypto"
 	"reflect"
 )
@@ -52,18 +53,60 @@ type stopCmd struct {
 	Stop bool
 }
 
+//from jobs
 type metricsCmd struct {
 	CpuUsage                   uint32
 	MemTotal, MemUsed, MemFree uint32
 }
 
-type recordSyncCmd struct {
-	Index uint64
+/*		 Quantum Sync			 */
+
+//master =>
+type syncStatusCmd struct {
+	ID    string
+	Space uint32 //Current Quantum space
 }
 
-type recordSyncResponseCmd struct {
-	Index uint64
-	OK    bool
+//job =>
+type syncStatusResponseCmd struct {
+	ID      string
+	Quantum map[uint32]uint32 //running quantum by space. Sometime it's not possible to close quantum space immediately because of Time Windows. When window will be closed - quantum will be released
+	Status  uint8             //Current job status
+}
+
+//job => master
+type releasingQuantumCmd struct {
+	ID    string
+	Space uint32 //Quantum space to release
+}
+
+//master => job. Accepted
+type releasingQuantumResponseCmd struct {
+	ID string
+	OK bool
+}
+
+//master =>
+type assignQuantumCmd struct {
+	ID      string
+	Quantum []quantum.Quantum
+}
+
+//job =>
+type assignQuantumResponseCmd struct {
+	ID string
+	OK bool
+}
+
+//18 bytes
+type DataSetStat struct {
+	ID      uint16
+	Records uint64
+	Bytes   uint64
+}
+
+type recordSyncCmd struct {
+	DataSet [16]DataSetStat //Max 16 data set stats at a time 288bytes
 }
 
 type commandRegistry struct {
