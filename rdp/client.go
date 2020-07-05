@@ -17,6 +17,8 @@ import (
 	"time"
 )
 
+type handlerType reflect.Value
+
 type client struct {
 	key          crypto.PrivateKey
 	version      Version

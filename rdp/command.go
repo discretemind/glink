@@ -7,6 +7,8 @@ import (
 	"reflect"
 )
 
+type Packet [300]byte
+
 /*
 	Public Unencrypted ProtectedCommands
 */
@@ -119,6 +121,24 @@ func newRegistry() *commandRegistry {
 		byType: make(map[reflect.Type]uint16),
 		byID:   make(map[uint16]reflect.Type),
 	}
+}
+
+type PeerKey [64]byte
+
+func NewPeerKey(id crypto.Certificate, pub crypto.PublicKey) (res PeerKey) {
+	copy(res[:32], id[:])
+	copy(res[32:], pub[:])
+	return
+}
+
+func (pk PeerKey) ID() (res crypto.Certificate) {
+	copy(res[:], pk[:32])
+	return
+}
+
+func (pk PeerKey) Public() (res crypto.PublicKey) {
+	copy(res[:], pk[32:])
+	return
 }
 
 func (r commandRegistry) register(id uint16, value interface{}) {
