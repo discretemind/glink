@@ -44,17 +44,17 @@ type ProtectedCommand struct {
 	Payload []byte
 }
 
-type startCmd struct {
+type StartCmd struct {
 	Config []byte
 	Start  bool
 }
 
-type stopCmd struct {
+type StopCmd struct {
 	Stop bool
 }
 
 //from jobs
-type metricsCmd struct {
+type MetricsCmd struct {
 	CpuUsage                   uint32
 	MemTotal, MemUsed, MemFree uint32
 }
@@ -156,7 +156,7 @@ func (r commandRegistry) GetId(cmd interface{}) (res uint16, ok bool) {
 func init() {
 	ProtectedCommands = newRegistry()
 
-	ProtectedCommands.register(1, metricsCmd{})
-	ProtectedCommands.register(2, startCmd{})
-	ProtectedCommands.register(3, stopCmd{})
+	ProtectedCommands.register(1, MetricsCmd{})
+	ProtectedCommands.register(2, StartCmd{})
+	ProtectedCommands.register(3, StopCmd{})
 }

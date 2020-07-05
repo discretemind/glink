@@ -222,7 +222,7 @@ func (c *client) publishMetrics() error {
 		cpuUsage = uint32(math.Round(cp[0] * 100))
 	}
 
-	cmd := metricsCmd{
+	cmd := MetricsCmd{
 		CpuUsage: cpuUsage,
 		MemTotal: uint32(v.Total / mBytes),
 		MemUsed:  uint32(v.Used / mBytes),

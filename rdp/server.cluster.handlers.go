@@ -34,7 +34,7 @@ func (c *cluster) registerHandler(value interface{}) {
 //	return nil
 //}
 
-func (c *cluster) handleMetrics(p *Peer, command *metricsCmd) error {
+func (c *cluster) handleMetrics(p *Peer, command *MetricsCmd) error {
 	c.logger.Info("handleMetrics: ", zap.String("peer", p.addr.String()), zap.Any("cmd", command))
 	return p.UpdateMetrics(command)
 }

@@ -41,6 +41,6 @@ func (p *Peer) IsAccepted() bool {
 	return p.accepted
 }
 
-func (p *Peer) UpdateMetrics(m *metricsCmd) error {
+func (p *Peer) UpdateMetrics(m *MetricsCmd) error {
 	return nil
 }

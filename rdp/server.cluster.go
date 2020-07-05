@@ -106,7 +106,7 @@ func (c *cluster) packMessage(p *Peer, value interface{}) (res *outboxMessage, e
 	copy(packet[:], encoder.EncodeRaw(cmd))
 
 	res = &outboxMessage{
-		Addr: p.addr,
+		Addr:   p.addr,
 		Packet: packet,
 	}
 
@@ -164,7 +164,7 @@ func (c *cluster) Start(peer string, config interface{}) error {
 	}
 
 	if p, ok := c.peers[peerId]; ok {
-		if msg, err := c.packMessage(p, startCmd{
+		if msg, err := c.packMessage(p, StartCmd{
 			Start:  true,
 			Config: cfgData,
 		}); err != nil {
@@ -180,7 +180,7 @@ func (c *cluster) Start(peer string, config interface{}) error {
 func (c *cluster) Stop(peer string) error {
 	peerId := crypto.CertificateFromString(peer)
 	if p, ok := c.peers[peerId]; ok {
-		if msg, err := c.packMessage(p, stopCmd{
+		if msg, err := c.packMessage(p, StopCmd{
 			Stop: true,
 		}); err != nil {
 			return err

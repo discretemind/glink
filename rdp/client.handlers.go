@@ -33,12 +33,12 @@ func (c *client) registerHandler(value interface{}) {
 //	return nil
 //}
 
-func (c *client) startHandler(cmd *startCmd) {
+func (c *client) startHandler(cmd *StartCmd) {
 	c.logger.Info("startHandler", zap.String("cmd", string(cmd.Config)))
 }
 
 func (c *client) OnStart(f func(cfg string)) (err error) {
-	//return c.subscribe(func(cmd *startCmd) {
+	//return c.subscribe(func(cmd *StartCmd) {
 	//	f(string(cmd.Config))
 	//})
 	return nil
